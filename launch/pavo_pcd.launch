@@ -1,0 +1,4 @@
+<launch>
+  <node name="PavoPcdNode" pkg="pavo_ros" type="pavo_pcd_node" output="screen"/>
+  <node pkg="tf" type="static_transform_publisher" name="static_broadcaster" args="0 0 0 0 0 0 laser_pcd pcd_frame 66" />
+</launch>

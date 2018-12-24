@@ -1,0 +1,4 @@
+<launch>
+  <node name="PavoScanNode" pkg="pavo_ros" type="pavo_scan_node" output="screen"/>
+  <node pkg="tf" type="static_transform_publisher" name="static_broadcaster" args="0 0 0 0 0 0 laser_scan scan_frame 33" />
+</launch>

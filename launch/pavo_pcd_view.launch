@@ -1,0 +1,4 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pavo_ros)/rviz/pavo_pcd.rviz" />
+  <node name="PavoPcdNode" pkg="pavo_ros" type="pavo_pcd_node" output="screen"/>
+</launch>
