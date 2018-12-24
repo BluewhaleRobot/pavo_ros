@@ -66,6 +66,9 @@ int main(int argc, char** argv){
   ros::init(argc, argv, "laser_scan_publisher");
 
   ros::NodeHandle nh;
+  std::string frame_id;
+  ros::param::param<std::string>("~frame_id", frame_id, "scan_frame");
+
   ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>("pavo_scan", 1000); //1000 Messages to buffer, topic: pavo_scan
 
   bool compensate = true;
@@ -108,12 +111,12 @@ int main(int argc, char** argv){
         comp_nodes[index].distance = responses_ptr[i].distance;
         comp_nodes[index].intensity = responses_ptr[i].intensity;
       }
-      publish_msg(&scan_pub, comp_nodes, count, start_scan_time, scan_duration, "scan_frame"); //frame_id: scan_frame
+      publish_msg(&scan_pub, comp_nodes, count, start_scan_time, scan_duration, frame_id); //frame_id: scan_frame
       delete[] comp_nodes;
     } 
     else
     {
-      publish_msg(&scan_pub, responses_ptr, count, start_scan_time, scan_duration, "scan_frame");
+      publish_msg(&scan_pub, responses_ptr, count, start_scan_time, scan_duration, frame_id);
     }
 
     rate.sleep();

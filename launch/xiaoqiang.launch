@@ -1,0 +1,7 @@
+<launch>
+  <node name="PavoScanNode" pkg="pavo_ros" type="pavo_scan_node" output="screen">
+  <param name="frame_id"            type="string" value="laser"/>
+  </node>
+  <include file="$(find laser_filters)/examples/shadow_filter_pavo.launch" />
+  <node pkg="tf" type="static_transform_publisher" name="laserlink_broadcaster" args="0 0 0.3 3.1415926 0 0  base_link  laser 30"/>
+</launch>

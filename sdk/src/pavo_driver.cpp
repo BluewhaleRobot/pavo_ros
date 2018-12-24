@@ -11,9 +11,9 @@
 #include "../include/byte_order.h"
 
 
-#define PAVO_DEVICE_IP "192.168.1.101"
+#define PAVO_DEVICE_IP "169.254.1.101"
 //#define PAVO_DEVICE_IP "192.168.1.101"
-#define PAVO_SERVER_IP "192.168.1.100"
+#define PAVO_SERVER_IP "169.254.1.100"
 //#define PAVO_SERVER_IP "192.168.1.100"
 #define PAVO_DEVICE_PORT (2368)
 #define PAVO_SERVER_PORT (2368)
@@ -270,9 +270,9 @@ namespace pavo
 		{
 			boost::lock_guard<boost::mutex> guard(this->DataOpMtx);  //protect "IsDataMode"
 
-			if (!IsDataMode)  //ÃüÁîÐÐÄ£Ê½
+			if (!IsDataMode)  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 			{
-				if (IsCMDResponse(ReceiveBuffer))  //È·¶¨´¦ÓÚÃüÁîÐÐÄ£Ê½
+				if (IsCMDResponse(ReceiveBuffer))  //È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 				{
 					this->IsResponseReceived = true;
 					this->DataOpCond.notify_one();
