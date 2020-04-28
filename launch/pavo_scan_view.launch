@@ -1,0 +1,25 @@
+<launch>
+  <arg name="enable_motor"   default="true"/>
+  <arg name="method"         default="0"/><!--设置使用的去除拖尾的方法，取值范围0,1,2,3;0表示不去除拖尾，1表示适中方式，2表示较强去除，3表示强烈去除,默认不开启去除拖尾-->
+  
+  <node name="PavoScanNode"    pkg="pavo_ros"  type="pavo_scan_node"  output="screen">
+    <param name="frame_id"     type="string"   value="laser_frame"/><!--配置frame_id-->
+    <param name="scan_topic"   type="string"   value="scan" /><!--设置激光雷达的topic名称--> 
+    <param name="angle_min"    type="double"   value="-135.00" /><!--设置最小角度，单位度.取值范围[-135,135].default=-135.0-->
+    <param name="angle_max"    type="double"   value="135.00"/><!--设置最大角度，单位度.取值范围[-135,135].default=135.0-->
+    <param name="range_min"    type="double"   value="0.10" /><!--设置最小距离，单位米，default=0.10-->
+    <param name="range_max"    type="double"   value="50.0" /><!--设置最大距离，单位米，default=50-->
+    <param name="inverted"     type="bool"     value="false"/><!--配置雷达是否倒装，倒装true，正装false-->
+    <param name="enable_motor" type="bool"     value="$(arg enable_motor)"/><!--设置雷达启动和停止,启动true，停止false-->
+    <param name="motor_speed"  type="int"      value="15" /><!--可配10,15,20,25,30Hz,default=15Hz-->
+    <param name="merge_coef"   type="int"      value="2" /><!--可配1,2,4,8点合并,default=2，即两点合并为一点-->
+    <param name="lidar_ip"     type="string"   value="10.10.10.101" /><!--所要连接的雷达IP地址，即通过PavoView设置的雷达IP地址-->
+    <param name="lidar_port"   type="int"      value="2368" /><!--雷达ip默认为10.10.10.101，端口号默认为2368-->
+    <param name="method"       type="int"      value="$(arg method)" />
+    <param name="switch_active_mode"   type="bool"  value="false"/><!--自2.0.0版本开始,不用再设置主机IP.若使用之前版本，需将此value设为true；并为host_ip和host_port赋值-->
+    <!--param name="host_ip"      type="string"   value="10.10.10.100" /--><!--所要绑定的网卡IP地址，即通过PavoView设置的雷达目标上位机地址-->
+    <!--param name="host_port"    type="int"      value="2368" /--><!--所要绑定的端口-->
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pavo_ros)/rviz/pavo_scan.rviz" />
+</launch>

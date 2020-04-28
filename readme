@@ -1,0 +1,92 @@
+###################################
+PAVO ROS package
+###################################
+使用方法：
+1.在系统中安装ros环境，具体安装方法参考下面连接：
+  安装链接：http://wiki.ros.org/kinetic/Installation/Ubuntu
+  搭建ros工程链接：http://wiki.ros.org/cn/ROS/Tutorials/InstallingandConfiguringROSEnvironment
+  
+2.将pavo_ros复制到ros工作目录下的src目录
+
+3.编译工程
+  catkin_make
+  
+4.设置环境变量
+  source devel/setup.sh
+  
+5.配置上位机IP
+  与雷达连接的网卡IP：默认上位机IP配置为10.10.10.100
+  
+6.配置雷达参数
+  打开pavo_ros/launch/pavo_scan.launch或pavo_ros/launch/pavo_pcd.launch文件，进行参数配置
+  参数说明：
+  1.enable_motor 使雷达电机转动或停止，false表示使其停止，true表示使其转动
+  2.method 使用的去除雷达拖尾的方法，取值范围为0,1,2,3；0表示不去除拖尾，1表示适中方式，2表示较强去除，3表示强烈去除.default=0.
+  3.frame_id 雷达id，default=laser_frame
+  4.scan_topic 雷达的topic名称，default=scan
+  5.angle_min 最小角度，单位度，取值范围 [-135,135],default=-135,即-135度
+  6.angle_max 最大角度，单位度，取值范围 [-135,135],default=135，即135度
+  7.range_min 最小距离，单位米，default=0.10
+  8.range_max 最大距离，单位米，default=50.0
+  9.inverted 是否设置翻转，取值范围true，false . default=false
+  10.motor_speed 雷达转速，单位Hz，取值范围为10,15,20,25,30.default=15Hz
+  11.merge_coef 多点合并，取值范围为1,2,4,8.default=2，即2点合并为1点
+  12.host_ip 主机ip，默认为10.10.10.100.所要绑定的网卡IP地址，即通过PavoView设置的雷达目标上位机地址
+  13.host_port 所要绑定的主机端口号，默认为2368.
+  14.lidar_ip 所要连接的雷达IP地址，即通过PavoView设置的雷达IP地址，默认为10.10.10.101.
+  15.lidar_port 所要连接的雷达端口号，默认为2368.
+  16.switch_active_mode 自2.0.0版本开始,不用再设置主机的IP和port.若使用之前版本的雷达，需将此value设为true，并为host_ip和host_port赋值
+  
+7.启动PAVO ros节点
+  1)发布LaserScan消息
+    1.roslaunch pavo_ros pavo_scan.launch
+    2.roslaunch pavo_ros pavo_scan_view.launch (使用rviz显示）
+  2)发布PointCloud消息
+    1.roslaunch pavo_ros pavo_pcd.launch
+    2.roslaunch pavo_ros pavo_pcd_view.launch (使用rviz显示）
+  3)加载雷达的3D urdf模型并显示
+    1.source devel/setup.bash
+    2.roslaunch pavo_ros pavo_scan_model.launch
+  4)启动多个雷达节点
+    1.source devel/setup.bash
+    2.roslaunch pavo_ros pavo_scan_twin.launch
+
+8.建图
+  1)使用gmapping建图
+    1.安装gmapping
+     sudo apt-get install ros-kinetic-slam-gmapping（ubuntu16.04）
+     sudo apt-get install ros-indigo-slam-gmapping  (ubuntu14.04)
+    2.安装laser_scan_matcher，此包用于根据雷达数据的匹配来估计雷达的位置运动，发布geometry_msgs/Pose2D信息
+     sudo apt-get install ros-kinetic-scan-tools（ubuntu16.04）
+     sudo apt-get install ros-indigo-scan-tools（ubuntu14.04）
+    3.运行gmapping，在src目录下
+     source devel/setup.bash
+     roslaunch pavo_ros pavo_gmapping.launch
+  2)使用hector实时建图（强烈建议转速设置为30Hz，点数合并设置为1）
+    1.安装hector
+     sudo apt-get install ros-kinetic-hector-slam（ubuntu16.04）
+     sudo apt-get install ros-indigo-hector-slam  (ubuntu14.04)
+    2.运行hector算法实时构建地图，在src目录下
+     source devel/setup.bash  
+     roslaunch pavo_ros pavo_hector.launch
+
+9.雷达启动和关闭功能
+  1)关闭雷达
+     在终端中输入
+     source devel/setup.bash
+     roslaunch pavo_ros pavo_scan.launch enable_motor:=0   （enable_motor默认为1，即启动雷达）
+     或
+     roslaunch pavo_ros pavo_scan_view.launch enable_motor:=0                               
+  2)启动雷达
+     在终端中输入
+     source devel/setup.bash
+     roslaunch pavo_ros pavo_scan.launch enable_motor:=1
+     或
+     roslaunch pavo_ros pavo_scan_view.launch enable_motor:=1
+
+10.启动去除拖尾功能
+     在终端中输入
+     source devel/setup.bash
+     roslaunch pavo_ros pavo_scan_view.launch method:=0/1/2/3 method表示使用的去除拖尾的方法，method=0表示不启动去除拖尾，1表示适中方式，2表示较强去除，3表示强烈去除
+     或
+     roslaunch pavo_ros pavo_pcd_view.launch method:=0/1/2/3 method表示使用的去除拖尾的方法，method=0表示不启动去除拖尾，1表示适中方式，2表示较强去除，3表示强烈去除

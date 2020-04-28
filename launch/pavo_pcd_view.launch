@@ -1,0 +1,22 @@
+<launch>
+  <arg name="enable_motor" default="true"/>
+  <arg name="method"         default="0"/>
+
+  <node name="PavoPcdNode"     pkg="pavo_ros"  type="pavo_pcd_node"  output="screen">
+    <param name="frame_id"     type="string"   value="pcd_frame"/><!--设置Pointcloud的id,default=pcd_frame-->
+    <param name="cloud_topic"  type="string"   value="cloud"/><!--设置Pointcloud的topic,default=cloud-->
+    <param name="angle_min"    type="double"   value="-135.0" /><!--设置最小角度，单位度，取值范围 [-135.0,135.0],default=-135.0-->
+    <param name="angle_max"    type="double"   value="135.0"/><!--设置最大角度，单位度，取值范围 [-135,135],default=135.0-->
+    <param name="inverted"     type="bool"     value="false"/><!--设置是否倒装雷达，true倒装，false正装.default=false-->
+    <param name="enable_motor" type="bool"     value="$(arg enable_motor)"/><!--设置雷达启动和停止,启动true，停止false-->
+    <param name="motor_speed"  type="int"      value="15" /><!--可配10,15,20,25Hz,default=15Hz-->
+    <param name="merge_coef"   type="int"      value="2" /><!--可配1,2,4,8点合并,default=2-->
+    <param name="lidar_ip"     type="string"   value="10.10.10.101" /><!--所要连接的雷达IP地址，即通过PavoView设置的雷达IP地址-->
+    <param name="lidar_port"   type="int"      value="2368" /><!--默认雷达ip=10.10.10.101,雷达端口为2368-->
+    <param name="method"       type="int"      value="$(arg method)"/>
+    <param name="switch_active_mode"   type="bool"  value="false"/><!--自2.0.0版本开始,不用再设置主机的IP和port.若使用之前版本，需将此value设为true；并为host_ip和host_port赋值-->
+    <!--param name="host_ip"     type="string"   value="10.10.10.100" /--><!--所要绑定的网卡IP地址，即通过PavoView设置的雷达目标上位机地址-->
+    <!--param name="host_port"   type="int"      value="2368" /--><!--所要绑定的端口-->
+  </node>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pavo_ros)/rviz/pavo_pcd.rviz" />
+</launch>

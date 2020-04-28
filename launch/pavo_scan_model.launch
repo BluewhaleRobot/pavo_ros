@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find pavo_ros)/urdf/launch/display.launch" />
+  <include file="$(find pavo_ros)/launch/pavo_scan.launch" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find pavo_ros)/rviz/pavo_scan_model.rviz" />
+</launch>

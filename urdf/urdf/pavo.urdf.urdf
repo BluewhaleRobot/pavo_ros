@@ -1,0 +1,43 @@
+<robot
+  name="pavo.urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00132320412994065 -0.0337868465529445 -6.53369466536362E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.0359279540790479" />
+      <inertia
+        ixx="1.07821122769025E-05"
+        ixy="-1.17107871697094E-07"
+        ixz="-4.4057224142303E-09"
+        iyy="1.30939514154398E-06"
+        iyz="-2.43490567583342E-08"
+        izz="1.18365726542554E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://pavo_ros/urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 255 255 0.5" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://pavo_ros/urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>
